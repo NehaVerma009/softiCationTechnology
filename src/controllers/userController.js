@@ -6,9 +6,7 @@ const createUser = async function (req, res) {
   try {
     let data = req.body;
     if (Object.keys(data).length == 0) {
-      res
-        .status(400)
-        .send({ status: false, message: "Body should not be empty" });
+      res.status(400).send({ status: false, message: "Body should not be empty" });
     }
 
     let Title= isValid.isValidTitle(data.title)
@@ -70,9 +68,7 @@ const loginUser=async function(req,res){
         let body=req.body
         let{email,password}=body
         if (Object.keys(body).length == 0) {
-           return res
-              .status(400)
-              .send({ status: false, message: "Body should not be empty" });
+           return res.status(400) .send({ status: false, message: "Body should not be empty" });
           }
           
     let validEmail=  isValid.isValidEmail(email);
