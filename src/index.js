@@ -1,7 +1,6 @@
 const express = require('express');
 var bodyParser = require('body-parser');
-const multer = require('multer')
-
+// const multer = require('multer')
 const route = require('./routes/route')
 const app = express();
 const mongoose=require('mongoose')
@@ -13,9 +12,9 @@ mongoose.connect("mongodb+srv://book-management:31VMJSSWSjcdoaAO@cluster0.eemzti
 
 
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer().any())
+// app.use(multer().any()) 
 app.use('/', route);
 
 app.use(function(req,res){
@@ -24,8 +23,8 @@ app.use(function(req,res){
     return res.status(400).send("Path not Found.")
   })
   
-app.listen(process.env.PORT || 3001, function () {
-    console.log('Express app running on port ' + (process.env.PORT || 3001))
+app.listen(process.env.PORT || 3000, function () {
+    console.log('Express app running on port ' + (process.env.PORT || 3000))
 });
 
 
