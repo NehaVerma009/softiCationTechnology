@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel");
 const isValid = require("../validaters/userValidater");
+const jwt=require("jsonwebtoken")
 
 const createUser = async function (req, res) {
   try {
@@ -50,11 +51,6 @@ const createUser = async function (req, res) {
     if (pincode) {
       return res.status(400).send({ status: false, message: pincode });
     }
-
-    
-
-    
-
     let user = await userModel.create(data);
     return res.status(201).send({ status: true, message: "Success", data: user });
   } 
@@ -62,6 +58,50 @@ const createUser = async function (req, res) {
     console.log(error.message);
     res.status(500).send({ status: false, message: error.message });
   }
-};
+}
+
+const loginUser=async function(req,res){
+    try {
+        let body=req.body
+        let{email,password}=body
+        if (Object.keys(body).length == 0) {
+           return res
+              .status(400)
+              .send({ status: false, message: "Body should not be empty" });
+          }
+          
+    let validEmail=  isValid.isValidEmail(email);
+    if(validEmail){
+        return res.status(400).send({status:false,message:validEmail})
+    }
+    let validPassword=  isValid.isPassword(password);
+        if(validPassword){
+            return res.status(400).send({status:false,message:validPassword})
+        }
+
+
+
+
+        let checkUser=await userModel.findOne({email:email})
+
+        if(!checkUser){
+           return res.status(404).send({status:false,message:"User not found"})
+        }
+        if (password!=checkUser.password){
+            return res.status(400).send({status:false,message:"Password is incorrect"})
+        }
+
+        let createToken=jwt.sign({
+            userId:checkUser._id.toString()},"Stack",
+            {expiresIn:'30s'},'user-secret-key')
+
+        return res.status(201).send({status:true,message:"success",token:createToken})
+
+
+    } catch (error) {
+        return res.status(500).send({status:false,error:error.message})
+    }
+}
 
 module.exports.createUser = createUser;
+module.exports.loginUser=loginUser 

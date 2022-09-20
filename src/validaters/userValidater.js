@@ -8,9 +8,9 @@ function stringContainsNumber(_string) {
 function isEmail(emailAdress) {
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     // w use for char * use for breakpoint $ for end
-    return regex.test(emailAdress)
-        
+    return regex.test(emailAdress)       
 }
+
 
 function isPhoneNumber(number){
     let regex = /^\d{10}$/;
@@ -116,6 +116,20 @@ const isValidEmail = function (email) {
         return error.message
     }
 }
+const isPassword = function (password) {
+    try {
+        if (!password) {
+            return "Passwords is required ! "
+        }
+        if (whitespace(password)) {
+            return "Make sure email should not have any  space ! " 
+        }
+       
+    }
+    catch (error) {
+        return error.message
+    }
+}
 
 
 const isValidPincode = function (pincode) {
@@ -146,4 +160,4 @@ const isValidPincode = function (pincode) {
 
 
 
-module.exports = {isValidName,isValidMobile,isValidEmail,isValidTitle,isValidPincode}
+module.exports = {isValidName,isValidMobile,isValidEmail,isValidTitle,isValidPincode,isPassword}
