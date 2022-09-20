@@ -1,5 +1,5 @@
 function whitespace(str) {
-    return str.indexOf(" ") >= 0
+    return str.trim().indexOf(" ") >= 0
 }
 function stringContainsNumber(_string) {
     return /\d/.test(_string);
@@ -31,33 +31,33 @@ const isValidate= function (value) {
 
 
 
-  const isValidTitle = function(title){
-    try{
-        if(!title){
-            return "Title is Required"
+const isValidTitle = function(title){
+try{
+    if(!title){
+        return "Title is Required"
+    }
+
+    if (!isValidate(title)) {
+        return  "Title is invalid" 
+        }
+    
+        if (!["Mr", "Mrs", "Miss"].includes(title)) {
+        return  "Title should contain Mr.,Mrs.,Miss" 
         }
 
-        if (!isValidate(title)) {
-            return  "Title is required" 
-          }
-      
-          if (!["Mr", "Mrs", "Miss"].includes(title)) {
-            return  "Title should contain Mr.,Mrs.,Miss" 
-          }
-
-    }
-    catch(error){
-        return res.status(500).send(error.message)
-    }
-  }
+}
+catch(error){
+    return res.status(500).send(error.message)
+}
+}
 
 const isValidName = function(name){
     try{
         if(!name){
             return "Name is Required"
         }
-        if(typeof name !== "string"){
-            return "Name should be in string"
+        if(!isValidate(name)){
+            return "Name is invalid"
         }
         if(stringContainsNumber(name)){
             return "name should only contain letters"
@@ -69,22 +69,19 @@ const isValidName = function(name){
     }
 }
 
-    const isValidMobile = function (mobile) {
-        try {
-            if (!mobile) {
-                return "mobile number is required !"
-            }
-            if (typeof mobile !== 'string') {
-                return "mobile number should be in string ! "
-            }
-            if (whitespace(mobile)) {
-                return "Make sure mobile  number should not have space ! " 
-            }
-            // if (mobile.length< 10 || mobile.length>10) {
-            //     return "mobile number should be of 10 digits ! "
-            // }
+const isValidMobile = function (mobile) {
+    try {
+        if (!mobile) {
+            return "mobile number is required !"
+        }
+        if (!isValidate(mobile)) {
+            return "mobile number should be in string ! "
+        }
+        if (whitespace(mobile)) {
+            return "Make sure mobile  number should not have space ! " 
+        }
 
-            let phone = isPhoneNumber(mobile)
+        let phone = isPhoneNumber(mobile)
 
         if (phone == false) {
             return "Please provide valid phone Number !" 
@@ -93,7 +90,7 @@ const isValidName = function(name){
         catch (error) {
             return res.status(500).send(error.message)
         }
-    }
+}
 
     
 const isValidEmail = function (email) {
@@ -101,7 +98,7 @@ const isValidEmail = function (email) {
         if (!email) {
             return "email is required ! "
         }
-        if (typeof email !== 'string') {
+        if (!isValidate(email)) {
             return "email should be in string ! "
         }
         if (whitespace(email)) {
@@ -137,15 +134,12 @@ const isValidPincode = function (pincode) {
         if (!pincode) {
             return "pincode  is required !"
         }
-        if (typeof pincode !== 'string') {
+        if (!isValidate(pincode)) {
             return "pincode  should be in string ! "
         }
         if (whitespace(pincode)) {
             return "Make sure pincode  should not have space ! " 
         }
-        // if (pincode.length< 6 || pincode.length>6) {
-        //     return "pincode should be of 6 digits ! "
-        // }
 
         let Pincode = isPincode(pincode)
         if (Pincode == false) {

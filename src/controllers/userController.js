@@ -46,11 +46,16 @@ const createUser = async function (req, res) {
     if (checkemail) {
       return res.status(400).send({ status: false, message: "email already exists." });
     }
-
-    let pincode = isValid.isValidPincode(data.address.pincode);
+    if(data.address)
+    {let pincode = isValid.isValidPincode(data.address.pincode);
     if (pincode) {
       return res.status(400).send({ status: false, message: pincode });
+
     }
+
+    }
+
+
     let user = await userModel.create(data);
     return res.status(201).send({ status: true, message: "Success", data: user });
   } 
