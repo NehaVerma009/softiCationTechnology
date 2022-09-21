@@ -53,7 +53,7 @@ const authorization = async function(req,res,next){
     }
     else if(bodyId)
     {   
-        if(!bodyId.match(/^[0-9a-fA-F]{24}$/))
+        if(!isValid.isValidId(bodyId))
         return res.status(400).send({status:false,message:"Invalid userId given"})
         
         if(id!=bodyId)
