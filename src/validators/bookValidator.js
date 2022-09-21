@@ -52,19 +52,6 @@ const isValidExcerpt = function(excerpt){
     }
 }
 
-const isValidObjectId = function (objectId) {
-   try{
-    if(!isValidate(objectId)){
-        return "ID is not Present or wrong datatype"
-    }
-    return ObjectId.isValid(objectId)  
-    //validation of id 
-   }
-   catch(error){
-    return error.message
-   }
-}
-
 const isValidISBN = function(data){
     try{
         if(!data){
@@ -141,5 +128,5 @@ const isValidReleased = function(released){
 
             
 module.exports=
-{isValidTitle,isValidExcerpt,isValidObjectId,isValidCategory,isValidISBN,isValidReleased,isValidSubCategory,isISBN}
+{isValidTitle,isValidExcerpt,isValidCategory,isValidISBN,isValidReleased,isValidSubCategory,isISBN}
 

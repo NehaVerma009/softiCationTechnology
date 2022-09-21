@@ -1,6 +1,7 @@
 const bookModel = require("../models/bookModel");
 const reviewModel = require("../models/reviewModel");
 const isValid = require("../validators/bookValidator")
+const isValidUser = require("../validators/userValidator")
 const mongoose = require('mongoose')
 
 const createBook = async function (req, res) {
@@ -30,11 +31,6 @@ const createBook = async function (req, res) {
     let excerpt= isValid.isValidExcerpt(data.excerpt)
     if(excerpt){
         return res.status(400).send({status: false, message: excerpt})
-    }
-
-    let userId = isValid.isValidObjectId(data.userId)
-    if(!userId){
-        return res.status(400).send({status: false, message:userId})
     }
 
     let isbn=isValid.isValidISBN(data.ISBN)
@@ -103,14 +99,14 @@ let getBooks = async function (req, res) {
           }
           obj.subcategory = data.subcategory
       }
-
+        //capital letters coming first
       let listOfBooks = await bookModel.find(obj).select(
           { _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 }).sort(
               { title: 1 })
       if (listOfBooks.length == 0) {
           return res.status(404).send({ status: false, message: "No book Found with given filter " })
       }
-      return res.status(200).send({ status: true, data: listOfBooks })
+      return res.status(200).send({ status: true,message:"Books list", data: listOfBooks })
   } catch (error) {
       return res.status(500).send({ status: false, error: error.message })
 
@@ -121,14 +117,14 @@ const getBook = async function(req,res){
 
     try{ const bookId = req.params.bookId
      //not done in authentication
-     if (!bookId || !bookId.match(/^[0-9a-fA-F]{24}$/))
+     if (!bookId || !isValidUser.isValidId(bookId))
      return res.status(400).send({ status: false, message: "No bookId given or invalid" });
      
      if (Object.keys(req.query).length != 0) {
         return res.status(400).send({ status: false, message: "Query params not allowed" });
       }
-     const book = await bookModel.findById(bookId)
-     const reviewData = await reviewModel.find({bookId:bookId}).select({isDeleted:0,createdAt:0,updatedAt:0,__v:0})
+     const book = await bookModel.findOne({_id:bookId,isDeleted:false})
+     const reviewData = await reviewModel.find({bookId:bookId,isDeleted:false}).select({isDeleted:0,createdAt:0,updatedAt:0,__v:0})
  
      if(!book)
      return res.status(404).send({status:false,message:"No book found"})
