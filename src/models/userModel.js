@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         trim:true
+        //min len 8 max len 15
     },
     address:{
         street:{type: String,

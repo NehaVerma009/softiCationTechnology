@@ -17,6 +17,7 @@ function isPhoneNumber(number){
     return regex.test(number)
 }
 
+
 function isPincode(pin){
     let regex = /^\d{6}$/;
     return regex.test(pin)
@@ -33,9 +34,6 @@ const isValidate= function (value) {
 
 const isValidTitle = function(title){
 try{
-    if(!title){
-        return "Title is Required"
-    }
 
     if (!isValidate(title)) {
         return  "Title is invalid" 
@@ -53,9 +51,6 @@ catch(error){
 
 const isValidName = function(name){
     try{
-        if(!name){
-            return "Name is Required"
-        }
         if(!isValidate(name)){
             return "Name is invalid"
         }
@@ -71,9 +66,6 @@ const isValidName = function(name){
 
 const isValidMobile = function (mobile) {
     try {
-        if (!mobile) {
-            return "mobile number is required !"
-        }
         if (!isValidate(mobile)) {
             return "mobile number should be in string ! "
         }
@@ -95,9 +87,6 @@ const isValidMobile = function (mobile) {
     
 const isValidEmail = function (email) {
     try {
-        if (!email) {
-            return "email is required ! "
-        }
         if (!isValidate(email)) {
             return "email should be in string ! "
         }
@@ -115,12 +104,14 @@ const isValidEmail = function (email) {
 }
 const isPassword = function (password) {
     try {
-        if (!password) {
+        if (!isValidate(password)) {
             return "Passwords is required ! "
         }
         if (whitespace(password)) {
             return "Make sure email should not have any  space ! " 
         }
+        if(password.length>15 || password.length<8)
+            return "Password length should be between 8 and 15 characters"
        
     }
     catch (error) {
@@ -131,9 +122,6 @@ const isPassword = function (password) {
 
 const isValidPincode = function (pincode) {
     try {
-        if (!pincode) {
-            return "pincode  is required !"
-        }
         if (!isValidate(pincode)) {
             return "pincode  should be in string ! "
         }
