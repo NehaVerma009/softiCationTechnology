@@ -36,7 +36,7 @@ const isValidTitle = function(title){
 try{
 
     if (!isValidate(title)) {
-        return  "Title is invalid" 
+        return  "Title should be given and type string" 
         }
     
         if (!["Mr", "Mrs", "Miss"].includes(title)) {
@@ -52,7 +52,7 @@ catch(error){
 const isValidName = function(name){
     try{
         if(!isValidate(name)){
-            return "Name is invalid"
+            return "Name should be given and type string"
         }
         if(stringContainsNumber(name)){
             return "name should only contain letters"
@@ -67,7 +67,7 @@ const isValidName = function(name){
 const isValidMobile = function (mobile) {
     try {
         if (!isValidate(mobile)) {
-            return "mobile number should be in string ! "
+            return "mobile number should be given and type string! "
         }
         if (whitespace(mobile)) {
             return "Make sure mobile  number should not have space ! " 
@@ -88,7 +88,7 @@ const isValidMobile = function (mobile) {
 const isValidEmail = function (email) {
     try {
         if (!isValidate(email)) {
-            return "email should be in string ! "
+            return "email should be given and type string! "
         }
         if (whitespace(email)) {
             return "Make sure email should not have any  space ! " 
@@ -105,7 +105,7 @@ const isValidEmail = function (email) {
 const isPassword = function (password) {
     try {
         if (!isValidate(password)) {
-            return "Passwords is required ! "
+            return "Passwords should be given and type string! "
         }
         if (whitespace(password)) {
             return "Make sure email should not have any  space ! " 
@@ -123,7 +123,7 @@ const isPassword = function (password) {
 const isValidPincode = function (pincode) {
     try {
         if (!isValidate(pincode)) {
-            return "pincode  should be in string ! "
+            return "pincode  should be given and type string! "
         }
         if (whitespace(pincode)) {
             return "Make sure pincode  should not have space ! " 

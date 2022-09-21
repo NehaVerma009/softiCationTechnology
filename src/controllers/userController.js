@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel");
-const isValid = require("../validaters/userValidater");
+const isValid = require("../validators/userValidator");
 const jwt = require("jsonwebtoken")
 
 const createUser = async function (req, res) {

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
+<<<<<<< HEAD
 
+=======
+>>>>>>> 363bb46 (authorization)
 
 const reviewSchema = new mongoose.Schema({
 
@@ -27,6 +30,10 @@ rating:{
     required:true,
     trim:true
     //min 1 max 5
+},
+review:{
+    type:String,
+    default:""
 },
 isDeleted:{
     type:Boolean,
