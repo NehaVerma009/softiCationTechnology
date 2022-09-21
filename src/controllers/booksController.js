@@ -75,4 +75,52 @@ return  res.status(400).send({status: false, message:"INvalid ISBN" })
   }
 };
 
+
+
+let getBooks = async function (req, res) {
+  try {
+      let data = req.query
+      let obj = { isdeleted: false }
+      // console.log(res.headers.userId)
+      //============ Invalid param validation==================//
+      let objArr = ["userId", "category", "subcategory"]
+      
+      if (!Object.keys(data).every(elem => objArr.includes(elem)))
+      return res.status(400).send({ status: false, msg: "wrong query parameters present" });
+      
+      //============ Invalid userId validation==================//
+       if (data.userId) {
+          if (!mongoose.Types.ObjectId.isValid(data.userId)) {
+              return res.status(400).send({ status: false, message: "Invalid userId" })
+          }
+          obj.userId = data.userId
+      }
+      if (data.category||data.category==0) {
+          if(data.category.length==0){
+              return res.status(400).send({ status: false, message: " Please give any value in Category Param" }) 
+          }
+          obj.category = data.category
+      }
+      if (data.subcategory||data.subcategory==0) {
+          if(data.subcategory.length==0){
+              return res.status(400).send({ status: false, message: " Please give any value in Subcategory Param" })     
+          }
+          obj.subcategory = data.subcategory
+      }
+
+      let listOfBooks = await bookModel.find(obj).select(
+          { _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 }).sort(
+              { title: 1 })
+      if (listOfBooks.length == 0) {
+          return res.status(404).send({ status: false, message: "No book Found with given filter " })
+      }
+      return res.status(200).send({ status: true, data: listOfBooks })
+  } catch (error) {
+      return res.status(500).send({ status: false, error: error.message })
+
+  }
+
+}
+
 module.exports.createBook = createBook;
+module.exports.getBooks = getBooks

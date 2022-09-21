@@ -114,9 +114,10 @@ const loginUser=async function(req,res){
     }
     
     let createToken = jwt.sign({
-      userId: checkUser._id.toString()
-    }, "Stack",
-      { expiresIn: '30s' }, 'user-secret-key')
+      userId: checkUser._id.toString(),
+       exp: 1763861685
+    }, 'user-secret-key')
+
 
     return res.status(201).send({ status: true, message: "success", token: createToken })
 
