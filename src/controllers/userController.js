@@ -13,7 +13,7 @@ const createUser = async function (req, res) {
     const keys = ["title", "name", "phone", "email", "password","address"]
 
     if (!Object.keys(req.body).every(elem => keys.includes(elem))){
-      return res.status(400).send({ status: false, msg: "wrong Parameters"})
+      return res.status(400).send({ status: false, message: "wrong Parameters"})
     }
 
     if(req.body.address){
@@ -21,7 +21,7 @@ const createUser = async function (req, res) {
     const subkeys = ["street", "pincode", "city"]
     
     if (!Object.keys(req.body.address).every(elem => subkeys.includes(elem))){
-      return res.status(400).send({ status: false, msg: "wrong address Parameters"})
+      return res.status(400).send({ status: false, message: "wrong address Parameters"})
     }
   }
     let Title = isValid.isValidTitle(data.title)

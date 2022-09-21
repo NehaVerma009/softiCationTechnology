@@ -2,8 +2,15 @@ const mongoose = require ("mongoose")
 const ObjectId =mongoose.Types.ObjectId
 
 function isISBN(ISBN){
-    let regex = /^[\d*\-]{10}|[\d*\-]{13}$/;
+    let regex = /^[-0-9]{14}$/
+    //|[\d*\-]{10}$/;
+    
     return regex.test(ISBN)
+}
+
+function isDate(date){
+    let regex =/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+    return regex.test(date)
 }
 
 const isValidate= function (value) {
@@ -47,8 +54,8 @@ const isValidExcerpt = function(excerpt){
 
 const isValidObjectId = function (objectId) {
    try{
-    if(!objectId){
-        return "ID is not Present"
+    if(!isValidate(objectId)){
+        return "ID is not Present or wrong datatype"
     }
     return ObjectId.isValid(objectId)  
     //validation of id 
@@ -58,16 +65,16 @@ const isValidObjectId = function (objectId) {
    }
 }
 
-const isValidISBN = function(ISBN){
+const isValidISBN = function(data){
     try{
-        if(!ISBN){
+        if(!data){
             return "ISBN is not Present"
         }
-        if (!isValidate(ISBN)) {
+        if (!isValidate(data)) {
             return  "ISBN is invalid" 
             } 
 
-            let ISBN = isISBN(ISBN)
+        let ISBN = isISBN(data)
 
         if (ISBN == false) {
             return "Please provide valid ISBN Number !" 
@@ -109,14 +116,20 @@ const isValidSubCategory = function(subcategory){
     }
 }
 
-const isValidReview = function(reviews){
+const isValidReleased = function(released){
     try{
-        if(!reviews){
+        if(!isValidate(released)){
             return "reviews is not Present"
         }
-       if(!ContainNumber(reviews)){
-        return "TypeOf Review is Number"
-       }
+
+        let date = isDate(released)
+
+        if (date == false) {
+            return "Please provide valid date format YYYY-MM-DD !" 
+        }
+
+
+       
     }
     catch(error){
         error.message
@@ -128,5 +141,5 @@ const isValidReview = function(reviews){
 
             
 module.exports=
-{isValidTitle,isValidExcerpt,isValidObjectId,isValidCategory,isValidISBN,isValidReview,isValidSubCategory,}
+{isValidTitle,isValidExcerpt,isValidObjectId,isValidCategory,isValidISBN,isValidReleased,isValidSubCategory,isISBN}
 

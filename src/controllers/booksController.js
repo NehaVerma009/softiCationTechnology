@@ -1,6 +1,7 @@
 const bookModel = require("../models/bookModel");
-const isValid = require("../validaters/bookValidater")
-const ObjectId = require('mongoose').Types.ObjectId
+const reviewModel = require("../models/reviewModel");
+const isValid = require("../validators/bookValidator")
+const mongoose = require('mongoose')
 
 const createBook = async function (req, res) {
   try {
@@ -14,7 +15,7 @@ const createBook = async function (req, res) {
     const keys = ["title", "excerpt", "userId", "ISBN", "category","subcategory", "reviews","isDeleted","releasedAt"];
 
     if (!Object.keys(req.body).every((elem) => keys.includes(elem))) {
-      return res.status(400).send({ status: false, msg: "wrong Parameters" });
+      return res.status(400).send({ status: false, message: "wrong Parameters" });
     }
 
     let title= isValid.isValidTitle(data.title)
@@ -35,36 +36,31 @@ const createBook = async function (req, res) {
     if(!userId){
         return res.status(400).send({status: false, message:userId})
     }
-    
-if((isValid.isValidISBN && isValid.isISBN)){
-return  res.status(400).send({status: false, message:"INvalid ISBN" })
-}
 
-    let validISBN = isValid.isValidISBN(data.ISBN)
-    if(validISBN){
-        return res.status(400).send({status: false, message:validISBN })
-    }
+    let isbn=isValid.isValidISBN(data.ISBN)
+    if(isbn){
+    return  res.status(400).send({status: false, message: isbn })
+    }  
 
     let ISBN = await bookModel.findOne({ISBN:data.ISBN, isDeleted: false})
     if(ISBN){
        return  res.status(400).send({status:false, message: "ISBN already Exists"})
     }
 
-    let Category= isValid.isValidISBN(data.category)
+    let Category= isValid.isValidCategory(data.category)
     if(Category){
         return res.status(400).send({status: false, message: Category })
     }
 
-    let SubCategory= isValid.isValidISBN(data.subcategory)
+    let SubCategory= isValid.isValidSubCategory(data.subcategory)
     if(SubCategory){
         return res.status(400).send({status: false, message: SubCategory })
     }
 
-    let Review= isValid.isValidISBN(data.reviews)
-    if(!Review){
-        return res.status(400).send({status: false, message: Review})
+    let releasedAt= isValid.isValidReleased(data.releasedAt)
+    if(releasedAt){
+        return res.status(400).send({status: false, message: releasedAt})
     }
-
 
     let book = await bookModel.create(data)
     return res
@@ -81,12 +77,12 @@ let getBooks = async function (req, res) {
   try {
       let data = req.query
       let obj = { isdeleted: false }
-      // console.log(res.headers.userId)
+
       //============ Invalid param validation==================//
       let objArr = ["userId", "category", "subcategory"]
       
       if (!Object.keys(data).every(elem => objArr.includes(elem)))
-      return res.status(400).send({ status: false, msg: "wrong query parameters present" });
+      return res.status(400).send({ status: false, message: "wrong query parameters present" });
       
       //============ Invalid userId validation==================//
        if (data.userId) {
@@ -121,6 +117,30 @@ let getBooks = async function (req, res) {
   }
 
 }
+const getBook = async function(req,res){
 
+    try{ const bookId = req.params.bookId
+     //not done in authentication
+     if (!bookId || !bookId.match(/^[0-9a-fA-F]{24}$/))
+     return res.status(400).send({ status: false, message: "No bookId given or invalid" });
+     
+     if (Object.keys(req.query).length != 0) {
+        return res.status(400).send({ status: false, message: "Query params not allowed" });
+      }
+     const book = await bookModel.findById(bookId)
+     const reviewData = await reviewModel.find({bookId:bookId}).select({isDeleted:0,createdAt:0,updatedAt:0,__v:0})
+ 
+     if(!book)
+     return res.status(404).send({status:false,message:"No book found"})
+     const data = {...book._doc,reviewsData:reviewData}
+     return res.status(200).send({status:true,message:"Books list",data:data})
+ }catch(err)
+ {
+     return res.status(500).send({status:false,message:err.message})
+ }
+ 
+ }
+ 
+module.exports.getBook = getBook
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks

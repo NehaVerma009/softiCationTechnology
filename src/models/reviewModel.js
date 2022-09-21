@@ -1,9 +1,5 @@
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
-<<<<<<< HEAD
-
-=======
->>>>>>> 363bb46 (authorization)
 
 const reviewSchema = new mongoose.Schema({
 
