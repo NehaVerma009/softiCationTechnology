@@ -1,5 +1,8 @@
-const bookModel=require('../models/bookModel')
-const jwt = require("jsonwebtoken")
+const userModel = require("../models/userModel")
+const bookModel = require("../models/bookModel")
+const isValid = require("../validators/userValidator");
+
+const jwt = require('jsonwebtoken')
 
 
 //===================== Authenticate  ===========================================//
@@ -38,7 +41,7 @@ const authorization = async function(req,res,next){
     
     if(paramId)
     {
-        if(!paramId.match(/^[0-9a-fA-F]{24}$/))
+        if(!isValid.isValidId(paramId))
         return res.status(400).send({status:false,message:"Invalid blogId given"})
         const book = await bookModel.findById(paramId)
         if(!book)

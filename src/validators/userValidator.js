@@ -11,6 +11,11 @@ function isEmail(emailAdress) {
     return regex.test(emailAdress)       
 }
 
+function isValidId(Id){
+    let regex = /^[0-9a-fA-F]{24}$/
+    return regex.test(Id)
+}
+
 
 function isPhoneNumber(number){
     let regex = /^\d{10}$/;
@@ -142,4 +147,4 @@ const isValidPincode = function (pincode) {
 
 
 
-module.exports = {isValidName,isValidMobile,isValidEmail,isValidTitle,isValidPincode,isPassword}
+module.exports = {isValidId,isValidName,isValidMobile,isValidEmail,isValidTitle,isValidPincode,isPassword}
