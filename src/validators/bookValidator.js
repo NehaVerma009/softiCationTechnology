@@ -45,7 +45,7 @@ const isValidTitle = function (title) {
 
     let Title = ContainNumber(title);
 
-    if (Title == false) {
+    if (Title == true) {
       return "Title's should not contain Number !";
     }
     
@@ -118,9 +118,9 @@ const isValidSubCategory = function (subcategory) {
 
 const isValidReview = function (review) {
   try {
-    if (!review) {
-      return "Review is not present";
-    }
+    // if (!review) {
+    //   return "Review is not present";
+    // }
     if( !ContainNumber(review)) {
         return "Review should be a number";
       }
