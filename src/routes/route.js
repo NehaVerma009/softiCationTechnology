@@ -13,5 +13,7 @@ router.get("/books",auth.isAuthenticate,booksController.getBooks)
 router.get("/books/:bookId",auth.isAuthenticate,booksController.getBook)
 
 router.put("/books/:bookId",auth.isAuthenticate,auth.authorization,booksController.updateBook)
+router.delete("/books/:bookId",auth.isAuthenticate,auth.authorization,booksController.deleteBookById)
+
 module.exports= router
 
