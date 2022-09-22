@@ -58,10 +58,12 @@ const createBook = async function (req, res) {
         return res.status(400).send({status: false, message: SubCategory })
     }
 
-    let Review= isValid.isValidReview(data.reviews)
+    if(typeof data.reviews == "string")
+    {
+      let Review= isValid.isValidReview(data.reviews)
     if(Review){
         return res.status(400).send({status: false, message: Review})
-    }
+    }}
 
     let releasedAt= isValid.isValidReleased(data.releasedAt)
     if(releasedAt){
