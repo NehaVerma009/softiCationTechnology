@@ -1,17 +1,10 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
 
 function isISBN(ISBN) {
   let regex = /^[-0-9]{14}$/;
   //|[\d*\-]{10}$/;
 
   return regex.test(ISBN);
-}
-
-function isTitle(title){
-  
-    let regex = /^[A-Z][A-Za-z _-]{1,100}$/
-    return regex.test(title);
 }
 
 function isDate(date) {
@@ -118,9 +111,6 @@ const isValidSubCategory = function (subcategory) {
 
 const isValidReview = function (review) {
   try {
-    // if (!review) {
-    //   return "Review is not present";
-    // }
     if( !ContainNumber(review)) {
         return "Review should be a number";
       }

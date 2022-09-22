@@ -58,10 +58,12 @@ const createBook = async function (req, res) {
         return res.status(400).send({status: false, message: SubCategory })
     }
 
-    let Review= isValid.isValidReview(data.reviews)
+    if(typeof data.reviews == "string")
+    {
+      let Review= isValid.isValidReview(data.reviews)
     if(Review){
         return res.status(400).send({status: false, message: Review})
-    }
+    }}
 
     let releasedAt= isValid.isValidReleased(data.releasedAt)
     if(releasedAt){
@@ -80,7 +82,7 @@ const createBook = async function (req, res) {
 let getBooks = async function (req, res) {
   try {
       let data = req.query
-      let obj = { isdeleted: false }
+      let obj = { isDeleted: false }
 
       //============ Invalid param validation==================//
       let objArr = ["userId", "category", "subcategory"]
@@ -204,8 +206,24 @@ const updateBook  = async function(req,res){
     return res.status(200).send({status:true,message:"Document updated",data:update})
 
 }
- 
-module.exports.getBook = getBook
-module.exports.createBook = createBook;
-module.exports.getBooks = getBooks
-module.exports.updateBook  = updateBook
+
+//======================================DeleteBook By Id====================================================================//
+
+const deleteBookById=async function(req,res){
+    try{
+      const bookId=req.params.bookId
+  
+    let deleteBook= await bookModel.findByIdAndUpdate(bookId,{$set:{isDeleted:true,deletedAt:new Date()}})
+     return res.status(200).send({status:true,message:"Book deleted Succesfully"})
+    }catch(error){
+      return res.status(500).send({status:false,error:error.message})
+      
+    }
+  
+   }
+   
+   module.exports.getBook = getBook
+   module.exports.createBook = createBook;
+   module.exports.getBooks = getBooks
+   module.exports.updateBook  = updateBook
+   module.exports.deleteBookById = deleteBookById

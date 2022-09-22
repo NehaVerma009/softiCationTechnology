@@ -43,7 +43,7 @@ const authorization = async function(req,res,next){
     if(paramId)
     {
         if(!isValid.isValidId(paramId))
-        return res.status(400).send({status:false,message:"Invalid blogId given"})
+        return res.status(400).send({status:false,message:"Invalid bookId given"})
         const book = await bookModel.findOne({_id:paramId,isDeleted:false})
         if(!book)
         return res.status(404).send({status:false,message:"Book not found"})
