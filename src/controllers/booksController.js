@@ -18,11 +18,16 @@ const createBook = async function (req, res) {
     if (!Object.keys(req.body).every((elem) => keys.includes(elem))) {
       return res.status(400).send({ status: false, message: "wrong Parameters" });
     }
+    data.title=data.title.trim()
+    data.title=data.title[0].toUpperCase()+data.title.slice(1)//For Concate
 
     let title= isValid.isValidTitle(data.title)
     if(title){
         return res.status(400).send({status: false, message: title})
     }
+
+    
+
     let Title = await bookModel.findOne({title:data.title, isDeleted: false})
     if(Title){
       return  res.status(400).send({status:false, message: "Title already Exists"})
@@ -51,6 +56,11 @@ const createBook = async function (req, res) {
     let SubCategory= isValid.isValidSubCategory(data.subcategory)
     if(SubCategory){
         return res.status(400).send({status: false, message: SubCategory })
+    }
+
+    let Review= isValid.isValidReview(data.reviews)
+    if(Review){
+        return res.status(400).send({status: false, message: Review})
     }
 
     let releasedAt= isValid.isValidReleased(data.releasedAt)
@@ -107,7 +117,8 @@ let getBooks = async function (req, res) {
           return res.status(404).send({ status: false, message: "No book Found with given filter " })
       }
       return res.status(200).send({ status: true,message:"Books list", data: listOfBooks })
-  } catch (error) {
+  } 
+  catch (error) {
       return res.status(500).send({ status: false, error: error.message })
 
   }
@@ -115,7 +126,8 @@ let getBooks = async function (req, res) {
 }
 const getBook = async function(req,res){
 
-    try{ const bookId = req.params.bookId
+    try{ 
+        const bookId = req.params.bookId
      //not done in authentication
      if (!bookId || !isValidUser.isValidId(bookId))
      return res.status(400).send({ status: false, message: "No bookId given or invalid" });
