@@ -205,8 +205,8 @@ const updateBook  = async function(req,res){
 
 }
 
+//======================================DeleteBook By Id====================================================================//
 
-//======================================GetBook By Id====================================================================//
 const deleteBookById=async function(req,res){
     try{
       const bookId=req.params.bookId
