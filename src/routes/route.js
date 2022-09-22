@@ -12,5 +12,6 @@ router.post("/books",auth.isAuthenticate,auth.authorization,booksController.crea
 router.get("/books",auth.isAuthenticate,booksController.getBooks)
 router.get("/books/:bookId",auth.isAuthenticate,booksController.getBook)
 
+router.put("/books/:bookId",auth.isAuthenticate,auth.authorization,booksController.updateBook)
 module.exports= router
 
