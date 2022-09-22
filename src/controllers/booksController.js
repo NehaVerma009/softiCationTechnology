@@ -77,8 +77,6 @@ const createBook = async function (req, res) {
   }
 };
 
-
-
 let getBooks = async function (req, res) {
   try {
       let data = req.query
@@ -98,13 +96,13 @@ let getBooks = async function (req, res) {
           obj.userId = data.userId
       }
       if (data.category||data.category==0) {
-          if(data.category.length==0){
+          if(data.category.trim().length==0){
               return res.status(400).send({ status: false, message: " Please give any value in Category Param" }) 
           }
           obj.category = data.category
       }
       if (data.subcategory||data.subcategory==0) {
-          if(data.subcategory.length==0){
+          if(data.subcategory.trim().length==0){
               return res.status(400).send({ status: false, message: " Please give any value in Subcategory Param" })     
           }
           obj.subcategory = data.subcategory
@@ -148,7 +146,66 @@ const getBook = async function(req,res){
  }
  
  }
+
+const updateBook  = async function(req,res){
+
+    const data = req.body
+    const bookId = req.params.bookId
+
+    if (Object.keys(data).length == 0) {
+      return res.status(400).send({ status: false, message: "Body should not be empty" });
+    }
+
+    const keys = ["title", "excerpt", "ISBN", "releasedAt"];
+
+    if (!Object.keys(req.body).every((elem) => keys.includes(elem))) {
+      return res.status(400).send({ status: false, message: "wrong Parameters" });
+    }
+
+    //check for all fields
+    if(data.title!=undefined)
+    {let title= isValid.isValidTitle(data.title)
+    if(title){
+        return res.status(400).send({status: false, message: title})
+    }}
+    let Title = await bookModel.findOne({title:data.title, isDeleted: false})
+    if(Title){
+      return  res.status(400).send({status:false, message: "Title already Exists"})
+    }
+
+    if(data.excerpt!=undefined)
+    {let excerpt= isValid.isValidExcerpt(data.excerpt)
+    if(excerpt){
+        return res.status(400).send({status: false, message: excerpt})
+    }}
+
+    if(data.ISBN!=undefined)
+    {let isbn=isValid.isValidISBN(data.ISBN)
+    if(isbn){
+    return  res.status(400).send({status: false, message: isbn })
+    }}  
+
+    let ISBN = await bookModel.findOne({ISBN:data.ISBN, isDeleted: false})
+    if(ISBN){
+        return  res.status(400).send({status:false, message: "ISBN already Exists"})
+    }
+
+    if(data.releasdedAt!=undefined)
+    {let releasedAt= isValid.isValidReleased(data.releasedAt)
+    if(releasedAt){
+        return res.status(400).send({status: false, message: releasedAt})
+    }}
+    
+    const update = await bookModel.findOneAndUpdate({_id:bookId,isDeleted:false},{$set:data},{new:true})
+
+    if(!update)
+    return res.status(404).send({status:false,message:"No document found"})
+
+    return res.status(200).send({status:true,message:"Document updated",data:update})
+
+}
  
 module.exports.getBook = getBook
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks
+module.exports.updateBook  = updateBook
