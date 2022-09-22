@@ -44,7 +44,7 @@ try{
         return  "Title should be given and type string" 
         }
     
-        if (!["Mr", "Mrs", "Miss"].includes(title)) {
+        if (!["Mr", "Mrs", "Miss"].includes(title.trim())) {
         return  "Title should contain Mr.,Mrs.,Miss" 
         }
 
