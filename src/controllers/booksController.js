@@ -133,8 +133,12 @@ const getBook = async function(req,res){
  
      if(!book)
      return res.status(404).send({status:false,message:"No book found"})
-     const data = {...book._doc,reviewsData:reviewData}
-     return res.status(200).send({status:true,message:"Books list",data:data})
+     
+     //If you use toObject() mongoose will not include virtuals by default
+     const books = book.toObject()
+     books.reviewsData = reviewData
+
+     return res.status(200).send({status:true,message:"Books list",data:books})
  }catch(err)
  {
      return res.status(500).send({status:false,message:err.message})

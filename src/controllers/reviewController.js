@@ -43,9 +43,12 @@ const createReview = async function(req,res){
     data.bookId = bookId
     data.reviewedAt = Date.now()
     const reviewData = await reviewModel.create(data)
+    
+    //If you use toObject() mongoose will not include virtuals by default
+    const books = bookData.toObject()
+    books.review = reviewData
 
-    const finalData = {...bookData._doc,review:reviewData}
-    res.status(201).send({status:true,message:"Document updated",data:finalData})
+    res.status(201).send({status:true,message:"Document updated",data:books})
 
 }
 let deleteReviewById= async function(req, res){

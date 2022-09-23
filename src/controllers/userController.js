@@ -39,29 +39,20 @@ const createUser = async function (req, res) {
       return res.status(400).send({ status: false, message: phone });
     }
 
-    let checkphone = await userModel.findOne
-      ({
-        phone: data.phone,
-        isDeleted: false
-      });
-
-    if (checkphone) {
-      return res.status(400).send({ status: false, message: "mobile number already exists." });
-    }
-
-
+    //make one db call
     let email = isValid.isValidEmail(data.email);
     if (email) {
       return res.status(400).send({ status: false, message: email });
     }
+    
+    let checkphone = await userModel.findOne
+    ({$or:[{phone: data.phone, isDeleted: false},{email: data.email,isDeleted: false
+    }]});
 
-    let checkemail = await userModel.findOne({
-      email: data.email,
-      isDeleted: false
-    });
-    if (checkemail) {
-      return res.status(400).send({ status: false, message: "email already exists." });
-    }
+  if (checkphone) {
+    return res.status(400).send({ status: false, message: "mobile number or email already exists." });
+  }
+
 
     let validPassword = isValid.isPassword(data.password);
     if (validPassword) {
