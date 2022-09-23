@@ -1,3 +1,5 @@
+
+
 function whitespace(str) {
     return str.trim().indexOf(" ") >= 0
 }
