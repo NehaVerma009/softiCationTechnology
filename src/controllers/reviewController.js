@@ -20,7 +20,7 @@ const createReview = async function (req, res) {
     if (rating) {
         return res.status(400).send({ status: false, message: rating })
     }
-    //if we send empty string in update?
+    //we must send error for empty string here
     if (data.reviewedBy != undefined) {
         let reviewedBy = isValid.isValidate(data.reviewedBy)
         if (!reviewedBy)
@@ -39,12 +39,13 @@ const createReview = async function (req, res) {
         return res.status(404).send({ status: false, message: "No book found" })
 
     data.bookId = bookId
+    if(!data.reviewedAt)
     data.reviewedAt = Date.now()
     const reviewData = await reviewModel.create(data)
 
     //If you use toObject() mongoose will not include virtuals by default
     const books = bookData.toObject()
-    books.reviewsData = [reviewData]
+    books.reviewsData = reviewData
 
     res.status(201).send({ status: true, message: "Document updated", data: books })
 
@@ -151,7 +152,7 @@ let updateReview = async function (req, res) {
         }
 
         const lastData = book.toObject()
-        lastData.reviewData = [update]
+        lastData.reviewData = update
 
         return res.status(200).send({ status: true, message: "updated Succesfully", data: lastData })
 
