@@ -18,8 +18,8 @@ const isAuthenticate=async function(req,res,next){
         'user-secret-key',(error, response) => {
             if (error) {
               return res
-                .status(400)
-                .send({ status: false, message: "Not a Valid Token" });
+                .status(401)
+                .send({ status: false, message: "Not a Valid Token or Token Expired" });
             }
           req.headers["userId"]=response.userId
           next()

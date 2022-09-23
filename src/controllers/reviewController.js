@@ -158,8 +158,8 @@ let updateReview=async function (req,res){
     }
     
     
+
+    
     module.exports.createReview = createReview
     module.exports.updateReview = updateReview
-
-module.exports.createReview = createReview
-module.exports.deleteReviewById= deleteReviewById
+    module.exports.deleteReviewById= deleteReviewById
