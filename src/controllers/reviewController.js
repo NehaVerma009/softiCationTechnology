@@ -44,7 +44,7 @@ const createReview = async function (req, res) {
 
     //If you use toObject() mongoose will not include virtuals by default
     const books = bookData.toObject()
-    books.review = reviewData
+    books.reviewsData = [reviewData]
 
     res.status(201).send({ status: true, message: "Document updated", data: books })
 
