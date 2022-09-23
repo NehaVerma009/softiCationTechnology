@@ -4,6 +4,7 @@ const router =express.Router()
 const userController = require("../controllers/userController")
 const booksController = require("../controllers/booksController")
 const reviewController = require("../controllers/reviewController")
+
 const auth = require("../middlewares/authentication")
 
 router.post("/register",userController.createUser)
@@ -18,5 +19,7 @@ router.delete("/books/:bookId",auth.isAuthenticate,auth.authorization,booksContr
 
 router.delete("/books/:bookId/review/:reviewId",reviewController.deleteReviewById)
 
-module.exports= router
+router.post("/books/:bookId/review", reviewController.createReview)
+
+module.exports= router 
 

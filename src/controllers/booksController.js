@@ -26,14 +26,7 @@ const createBook = async function (req, res) {
         return res.status(400).send({status: false, message: title})
     }
 
-    
-
-    let Title = await bookModel.findOne({title:data.title, isDeleted: false})
-    if(Title){
-      return  res.status(400).send({status:false, message: "Title already Exists"})
-    }
-
-    let excerpt= isValid.isValidExcerpt(data.excerpt)
+  let excerpt= isValid.isValidExcerpt(data.excerpt)
     if(excerpt){
         return res.status(400).send({status: false, message: excerpt})
     }
@@ -43,11 +36,11 @@ const createBook = async function (req, res) {
     return  res.status(400).send({status: false, message: isbn })
     }  
 
-    let ISBN = await bookModel.findOne({ISBN:data.ISBN, isDeleted: false})
-    if(ISBN){
-       return  res.status(400).send({status:false, message: "ISBN already Exists"})
+    let isbTitle = await bookModel.findOne({$or:[{ISBN:data.ISBN, isDeleted: false},{title:data.title, isDeleted: false}]})
+    if(isbTitle){
+        return  res.status(400).send({status:false, message: "Title or ISBN already Exists"})
     }
-
+    //one db call
     let Category= isValid.isValidCategory(data.category)
     if(Category){
         return res.status(400).send({status: false, message: Category })
@@ -170,11 +163,8 @@ const updateBook  = async function(req,res){
     if(title){
         return res.status(400).send({status: false, message: title})
     }}
-    let Title = await bookModel.findOne({title:data.title, isDeleted: false})
-    if(Title){
-      return  res.status(400).send({status:false, message: "Title already Exists"})
-    }
-
+   
+    //one db call
     if(data.excerpt!=undefined)
     {let excerpt= isValid.isValidExcerpt(data.excerpt)
     if(excerpt){
@@ -187,9 +177,9 @@ const updateBook  = async function(req,res){
     return  res.status(400).send({status: false, message: isbn })
     }}  
 
-    let ISBN = await bookModel.findOne({ISBN:data.ISBN, isDeleted: false})
-    if(ISBN){
-        return  res.status(400).send({status:false, message: "ISBN already Exists"})
+    let isbTitle = await bookModel.findOne({$or:[{ISBN:data.ISBN, isDeleted: false},{title:data.title, isDeleted: false}]})
+    if(isbTitle){
+        return  res.status(400).send({status:false, message: "Title or ISBN already Exists"})
     }
 
     if(data.releasedAt!=undefined)
