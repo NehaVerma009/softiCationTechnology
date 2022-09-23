@@ -192,7 +192,7 @@ const updateBook  = async function(req,res){
         return  res.status(400).send({status:false, message: "ISBN already Exists"})
     }
 
-    if(data.releasdedAt!=undefined)
+    if(data.releasedAt!=undefined)
     {let releasedAt= isValid.isValidReleased(data.releasedAt)
     if(releasedAt){
         return res.status(400).send({status: false, message: releasedAt})
