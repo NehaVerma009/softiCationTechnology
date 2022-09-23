@@ -15,10 +15,6 @@ const createReview = async function(req,res){
     if (Object.keys(req.query).length != 0) {
        return res.status(400).send({ status: false, message: "Query params not allowed" });
      }
-    const book = await bookModel.findOne({_id:bookId,isDeleted:false})
-
-    if(!book) 
-    return res.status(404).send({status:false,message:"No book found"})
 
     let rating= isValid.isValidRating(data.rating)
     if(rating){
@@ -39,7 +35,11 @@ const createReview = async function(req,res){
             return res.status(400).send({status: false, message: "Review should be non-empty string!"})
     }
 
-    const bookData = await bookModel.findOneAndUpdate({bookId:bookId,isDeleted:false},{$inc:{reviews:1}},{new:true})
+    const bookData = await bookModel.findOneAndUpdate({_id:bookId,isDeleted:false},{$inc:{reviews:1}},{new:true})
+    
+    if(!bookData) 
+    return res.status(404).send({status:false,message:"No book found"})
+    
     data.bookId = bookId
     data.reviewedAt = Date.now()
     const reviewData = await reviewModel.create(data)
