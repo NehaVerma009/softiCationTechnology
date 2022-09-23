@@ -38,10 +38,11 @@ const isValidRating = function (rating) {
           return "Rating is mandatory and should be a number"
       } 
 
-    if(rating>5 || rating<1 )
-        return "Rating should be between 1 & 5"
+      let regexForRating=/^[1-5]\d*$/
       
-  
+      if(!regexForRating.test(rating) )
+          return "Rating should be between 1 & 5"
+        
     } 
     catch (error) {
       return error.message;
