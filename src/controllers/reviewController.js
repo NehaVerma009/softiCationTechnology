@@ -39,6 +39,7 @@ const createReview = async function (req, res) {
         return res.status(404).send({ status: false, message: "No book found" })
 
     data.bookId = bookId
+    //overwrite reviewedAt
     data.reviewedAt = Date.now()
     const reviewData = await reviewModel.create(data)
 
