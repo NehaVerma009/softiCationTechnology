@@ -52,7 +52,8 @@ try{
 
 }
 catch(error){
-    return res.status(500).send(error.message)
+        return error.message
+
 }
 }
 
@@ -67,7 +68,8 @@ const isValidName = function(name){
 
     }
     catch(error){
-        return res.status(500).send(error.message)
+        return error.message
+
     }
 }
 
@@ -87,7 +89,7 @@ const isValidMobile = function (mobile) {
         }
         }
         catch (error) {
-            return res.status(500).send(error.message)
+            return error.message
         }
 }
 

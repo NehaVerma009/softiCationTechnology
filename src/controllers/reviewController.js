@@ -6,7 +6,7 @@ const isValidUser = require("../validators/userValidator")
 
 const createReview = async function (req, res) {
 
-    const bookId = req.params.bookId
+    try{const bookId = req.params.bookId
     const data = req.body
     //not done in authentication
     if (!bookId || !isValidUser.isValidId(bookId))
@@ -39,6 +39,7 @@ const createReview = async function (req, res) {
         return res.status(404).send({ status: false, message: "No book found" })
 
     data.bookId = bookId
+    //overwrite reviewedAt
     data.reviewedAt = Date.now()
     const reviewData = await reviewModel.create(data)
 
@@ -47,7 +48,11 @@ const createReview = async function (req, res) {
     books.reviewsData = reviewData
 
     res.status(201).send({ status: true, message: "Document updated", data: books })
-
+}
+catch(error)
+{
+    return res.status(500).send({status:false,message:error.message})
+}
 }
 let deleteReviewById = async function (req, res) {
     try {
@@ -80,7 +85,7 @@ let deleteReviewById = async function (req, res) {
 
     }
     catch (error) {
-        res.status(500).send(error.message)
+        return res.status(500).send({status:false,message:error.message})
     }
 
 }
@@ -147,7 +152,7 @@ let updateReview = async function (req, res) {
 
 
         if (!update) {
-            return res.status(400).send({ status: false, message: "No review found with provide reviewId and booKId" })
+            return res.status(404).send({ status: false, message: "No review found with provide reviewId" })
         }
 
         const lastData = book.toObject()
@@ -156,7 +161,7 @@ let updateReview = async function (req, res) {
         return res.status(200).send({ status: true, message: "updated Succesfully", data: lastData })
 
     } catch (error) {
-        return res.status(500).send({ status: false, error: error.message })
+        return res.status(500).send({ status: false, message: error.message })
     }
 
 }

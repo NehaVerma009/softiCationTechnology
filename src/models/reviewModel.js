@@ -29,7 +29,8 @@ rating:{
 },
 review:{
     type:String,
-    default:""
+    default:"",
+    trim:true
 },
 isDeleted:{
     type:Boolean,
