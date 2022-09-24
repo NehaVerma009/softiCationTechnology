@@ -68,7 +68,7 @@ const createBook = async function (req, res) {
     .status(201).send({status: true, message:"Success",data:book})
   } 
   catch (error) {
-    return res.status(500).send(error.message);
+    return res.status(500).send({ status: false, message: error.message });
   }
 };
 
@@ -112,7 +112,7 @@ let getBooks = async function (req, res) {
       return res.status(200).send({ status: true,message:"Books list", data: listOfBooks })
   } 
   catch (error) {
-      return res.status(500).send({ status: false, error: error.message })
+      return res.status(500).send({ status: false, message: error.message })
 
   }
 
@@ -139,16 +139,16 @@ const getBook = async function(req,res){
      books.reviewsData = reviewData
 
      return res.status(200).send({status:true,message:"Books list",data:books})
- }catch(err)
+ }catch(error)
  {
-     return res.status(500).send({status:false,message:err.message})
+     return res.status(500).send({status:false,message:error.message})
  }
  
  }
 
 const updateBook  = async function(req,res){
 
-    const data = req.body
+   try{ const data = req.body
     const bookId = req.params.bookId
 
     if (Object.keys(data).length == 0) {
@@ -166,7 +166,11 @@ const updateBook  = async function(req,res){
     {let title= isValid.isValidTitle(data.title)
     if(title){
         return res.status(400).send({status: false, message: title})
-    }}
+    }
+    data.title=data.title.trim()
+    data.title=data.title[0].toUpperCase()+data.title.slice(1)//For Concate
+    }
+    
    
     //one db call
     if(data.excerpt!=undefined)
@@ -198,7 +202,8 @@ const updateBook  = async function(req,res){
     return res.status(404).send({status:false,message:"No document found"})
 
     return res.status(200).send({status:true,message:"Document updated",data:update})
-
+}catch(error)
+{return res.status(500).send({status:false,message:error.message})}
 }
 
 //======================================DeleteBook By Id====================================================================//
@@ -210,7 +215,7 @@ const deleteBookById=async function(req,res){
     let deleteBook= await bookModel.findByIdAndUpdate(bookId,{$set:{isDeleted:true,deletedAt:new Date()}})
      return res.status(200).send({status:true,message:"Book deleted Succesfully"})
     }catch(error){
-      return res.status(500).send({status:false,error:error.message})
+      return res.status(500).send({status:false, message:error.message})
       
     }
   

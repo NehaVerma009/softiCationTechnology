@@ -27,7 +27,7 @@ const isAuthenticate=async function(req,res,next){
         
     
 } catch (error) {
-    return res.status(500).send({status:false,error:error.message})
+    return res.status(500).send({status:false,message:error.message})
 
 }
     
@@ -67,8 +67,8 @@ const authorization = async function(req,res,next){
 
 
     }
-    catch(err){
-    return res.status(500).send({  status: false, message: err.message });
+    catch(error){
+    return res.status(500).send({  status: false, message: error.message });
     }
 }
 

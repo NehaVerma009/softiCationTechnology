@@ -72,7 +72,6 @@ const createUser = async function (req, res) {
     return res.status(201).send({ status: true, message: "Success", data: user });
   }
   catch (error) {
-    console.log(error.message);
     res.status(500).send({ status: false, message: error.message });
   }
 }
@@ -101,7 +100,7 @@ const loginUser=async function(req,res){
       return res.status(401).send({ status: false, message: "User not found" })
     }
     if (password != checkUser.password) {
-      return res.status(400).send({ status: false, message: "Password is incorrect" })
+      return res.status(401).send({ status: false, message: "Password is incorrect" })
     }
     
     let createToken = jwt.sign({
@@ -109,11 +108,11 @@ const loginUser=async function(req,res){
     }, 'user-secret-key',{expiresIn:'1hr'})
 
 
-    return res.status(201).send({ status: true, message: "success", token: createToken })
+    return res.status(200).send({ status: true, message: "success", token: createToken })
 
 
   } catch (error) {
-    return res.status(500).send({ status: false, error: error.message })
+    return res.status(500).send({ status: false, message: error.message })
   }
 }
 
