@@ -127,8 +127,12 @@ const isValidReview = function (review) {
 
 const isValidReleased = function (released) {
   try {
+    if (!released) {
+      return "released Date is not Present";
+    }
+
     if (!isValidate(released)) {
-      return "Date is not valid";
+      return "released Date is not valid";
     }
 
     let date = isDate(released);
