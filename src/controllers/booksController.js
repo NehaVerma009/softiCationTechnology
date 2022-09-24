@@ -18,14 +18,13 @@ const createBook = async function (req, res) {
     if (!Object.keys(req.body).every((elem) => keys.includes(elem))) {
       return res.status(400).send({ status: false, message: "wrong Parameters" });
     }
-    if(data.title){
-    data.title=data.title.trim()
-    data.title=data.title[0].toUpperCase()+data.title.slice(1)//For Concate
-    }
+
     let title= isValid.isValidTitle(data.title)
     if(title){
         return res.status(400).send({status: false, message: title})
     }
+    data.title=data.title.trim()
+    data.title=data.title[0].toUpperCase()+data.title.slice(1)//For Concate
 
   let excerpt= isValid.isValidExcerpt(data.excerpt)
     if(excerpt){
