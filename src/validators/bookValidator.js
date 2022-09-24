@@ -137,7 +137,7 @@ const isValidReleased = function (released) {
       return "Please provide valid date format YYYY-MM-DD !";
     }
   } catch (error) {
-    error.message;
+    return error.message;
   }
 };
 
