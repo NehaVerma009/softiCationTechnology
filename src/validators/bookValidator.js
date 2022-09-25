@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 function isISBN(ISBN) {
-  let regex = /^[-0-9]{14}$/;
+  let regex = /^[0-9\-]+$/;
   //|[\d*\-]{10}$/;
 
   return regex.test(ISBN);
@@ -132,7 +132,7 @@ const isValidReleased = function (released) {
     }
 
     if (!isValidate(released)) {
-      return "released Date is not valid";
+      return "Date is not given or invalid";
     }
 
     let date = isDate(released);

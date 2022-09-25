@@ -2,16 +2,23 @@ const bookModel = require("../models/bookModel")
 const reviewModel = require("../models/reviewModel")
 const isValid = require("../validators/reviewValidator")
 const isValidUser = require("../validators/userValidator")
+const isValidBook = require("../validators/bookValidator")
 
 
 const createReview = async function (req, res) {
 
     try{const bookId = req.params.bookId
     const data = req.body
+    const bodyId = req.body.bookId
     //not done in authentication
     if (!bookId || !isValidUser.isValidId(bookId))
         return res.status(400).send({ status: false, message: "No bookId given or invalid" });
+    if(bodyId!=undefined)
+    {
+        if(!(bodyId==bookId) || !isValidUser.isValidId(bookId))
+        return res.status(400).send({ status: false, message: "Invalid bookId given" });
 
+    }
     if (Object.keys(req.query).length != 0) {
         return res.status(400).send({ status: false, message: "Query params not allowed" });
     }
@@ -33,6 +40,10 @@ const createReview = async function (req, res) {
             return res.status(400).send({ status: false, message: "Review should be non-empty string!" })
     }
 
+    let reviewedAt = isValid.isValidReviewedAt(data.reviewedAt)
+    if (reviewedAt)
+        return res.status(400).send({ status: false, message: reviewedAt })
+
     const bookData = await bookModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $inc: { reviews: 1 } }, { new: true })
 
     if (!bookData)
@@ -40,7 +51,6 @@ const createReview = async function (req, res) {
 
     data.bookId = bookId
     //overwrite reviewedAt
-    data.reviewedAt = Date.now()
     const reviewData = await reviewModel.create(data)
 
     //If you use toObject() mongoose will not include virtuals by default
@@ -107,7 +117,7 @@ let updateReview = async function (req, res) {
         const book = await bookModel.findOne({ _id: bookId, isDeleted: false })
 
         if (!book) {
-            return res.status(400).send({ status: false, message: "Not a Valid BookID" })
+            return res.status(404).send({ status: false, message: "Book not found" })
         }
 
         if (!reviewId || !isValidUser.isValidId(reviewId))

@@ -10,6 +10,11 @@ catch (error){
     return error.message
 }
 }
+function isDate(date) {
+  let regex =
+    /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/;
+  return regex.test(date);
+}
 
 
 const isValidBookId = function(bookId){
@@ -48,7 +53,21 @@ const isValidRating = function (rating) {
       return error.message;
     }
   };
-
-module.exports = {isValidRating,isValidate,isValidReviewId,isValidBookId}
+const isValidReviewedAt= function (reviewedAt) {
+    try {
+      if (!isValidate(reviewedAt)) {
+        return "ReviewedAt is not given or invalid";
+      }
+  
+      let date = isDate(reviewedAt);
+  
+      if (date == false) {
+        return "Please provide valid date format YYYY-MM-DD !";
+      }
+    } catch (error) {
+      return error.message;
+    }
+  };
+module.exports = {isValidReviewedAt,isValidRating,isValidate,isValidReviewId,isValidBookId}
 
   

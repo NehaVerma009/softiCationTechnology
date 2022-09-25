@@ -108,7 +108,7 @@ const loginUser=async function(req,res){
     }, 'user-secret-key',{expiresIn:'1hr'})
 
 
-    return res.status(200).send({ status: true, message: "success", token: createToken })
+    return res.status(200).send({ status: true, message: "success", data:{token: createToken} })
 
 
   } catch (error) {
