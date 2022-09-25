@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 function isISBN(ISBN) {
-  let regex = /^[0-9\-]+$/;
+  let regex = /^[-0-9]{14}$/;
   //|[\d*\-]{10}$/;
 
   return regex.test(ISBN);
