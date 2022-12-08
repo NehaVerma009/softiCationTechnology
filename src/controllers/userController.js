@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel");
-
+const isValid = require("../validation/userValidation")
 const jwt = require("jsonwebtoken")
 
 const createUser = async function (req, res) {
@@ -95,5 +95,47 @@ const loginUser=async function(req,res){
   }
 }
 
+const forgetPassword = async function(req, res){
+  try{
+    let data= req.body
+    let{email, password}= data
+    if (Object.keys(data).length == 0) {
+      return res.status(400) .send({ status: false, message: "Body should not be empty" });
+     }
+
+     
+let validEmail=  isValid.isValidEmail(email);
+if(validEmail){
+   return res.status(400).send({status:false,message:validEmail})
+}
+
+if(!password){
+  return res.status(400).send({status:false,message:" Please Enter Password"})
+}
+
+let checkEmail = await userModel.findOne({ email: email })
+if(!checkEmail){
+  return res.status(400).send({status:false,message:" Invalid Email"})
+}
+console.log(checkEmail)
+
+let updateUser = await userModel.findOneAndUpdate({email:email},{$set:{password:password }},{new:true})
+console.log(updateUser)
+return res.status(200).send({status:true,message:updateUser })
+
+ }
+
+  catch(err){
+    return res.status(500).send({ status: false, message: err.message }) 
+  }
+}
+
+
+
+
+
+
+
 module.exports.createUser = createUser;
 module.exports.loginUser = loginUser 
+module.exports.forgetPassword= forgetPassword
