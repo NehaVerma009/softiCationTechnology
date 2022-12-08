@@ -1,5 +1,4 @@
 
-
 function whitespace(str) {
     return str.trim().indexOf(" ") >= 0
 }
@@ -13,10 +12,6 @@ function isEmail(emailAdress) {
     return regex.test(emailAdress)       
 }
 
-function isValidId(Id){
-    let regex = /^[0-9a-fA-F]{24}$/
-    return regex.test(Id)
-}
 
 
 function isPhoneNumber(number){
@@ -25,10 +20,7 @@ function isPhoneNumber(number){
 }
 
 
-function isPincode(pin){
-    let regex = /^\d{6}$/;
-    return regex.test(pin)
-}
+
 
 const isValidate= function (value) {
     if (typeof value === "undefined" || value === null) return false;
@@ -39,23 +31,7 @@ const isValidate= function (value) {
 
 
 
-const isValidTitle = function(title){
-try{
 
-    if (!isValidate(title)) {
-        return  "Title should be given and type string" 
-        }
-    
-        if (!["Mr", "Mrs", "Miss"].includes(title.trim())) {
-        return  "Title should contain Mr.,Mrs.,Miss" 
-        }
-
-}
-catch(error){
-        return error.message
-
-}
-}
 
 const isValidName = function(name){
     try{
@@ -129,26 +105,8 @@ const isPassword = function (password) {
 }
 
 
-const isValidPincode = function (pincode) {
-    try {
-        if (!isValidate(pincode)) {
-            return "pincode  should be given and type string! "
-        }
-        if (whitespace(pincode)) {
-            return "Make sure pincode  should not have space ! " 
-        }
-
-        let Pincode = isPincode(pincode)
-        if (Pincode == false) {
-            return "Please provide valid Pincode !" 
-        }
-
-    }
-    catch (error) {
-        return error.message
-    }
-}
 
 
 
-module.exports = {isValidId,isValidName,isValidMobile,isValidEmail,isValidTitle,isValidPincode,isPassword}
+
+module.exports = {isValidName,isValidMobile,isValidEmail,isPassword}

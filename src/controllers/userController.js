@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel");
-const isValid = require("../validators/userValidator");
+
 const jwt = require("jsonwebtoken")
 
 const createUser = async function (req, res) {
@@ -10,26 +10,13 @@ const createUser = async function (req, res) {
     return   res.status(400).send({ status: false, message: "Body should not be empty" });
     }
 
-    const keys = ["title", "name", "phone", "email", "password","address"]
+    const keys = [ "name", "phone", "email", "password"]
 
     if (!Object.keys(req.body).every(elem => keys.includes(elem))){
       return res.status(400).send({ status: false, message: "wrong Parameters"})
     }
 
-    if(req.body.address){
-
-    const subkeys = ["street", "pincode", "city"]
-    
-    if (!Object.keys(req.body.address).every(elem => subkeys.includes(elem))){
-      return res.status(400).send({ status: false, message: "wrong address Parameters"})
-    }
-  }
-    let Title = isValid.isValidTitle(data.title)
-    if (Title) {
-      return res.status(400).send({ status: false, message: Title });
-    }
-
-    let name = isValid.isValidName(data.name);
+        let name = isValid.isValidName(data.name);
     if (name) {
       return res.status(400).send({ status: false, message: name });
     }
@@ -59,14 +46,6 @@ const createUser = async function (req, res) {
       return res.status(400).send({ status: false, message: validPassword })
     }
 
-    if (data.address && data.address.pincode) {
-      let pincode = isValid.isValidPincode(data.address.pincode);
-      if (pincode) {
-        return res.status(400).send({ status: false, message: pincode });
-
-      }
-
-    }
 
     let user = await userModel.create(data);
     return res.status(201).send({ status: true, message: "Success", data: user });
